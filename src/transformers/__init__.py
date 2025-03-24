@@ -2628,6 +2628,8 @@ else:
         [
             "GraniteSpeechForConditionalGeneration",
             "GraniteSpeechPreTrainedModel",
+            "GraniteSpeechEncoderProjectorPreTrainedModel",
+            "GraniteSpeechQFormerModel",
         ]
     )
     _import_structure["models.grounding_dino"].extend(
@@ -7715,6 +7717,8 @@ if TYPE_CHECKING:
         from .models.granite_speech import (
             GraniteSpeechForConditionalGeneration,
             GraniteSpeechPreTrainedModel,
+            GraniteSpeechEncoderProjectorPreTrainedModel,
+            GraniteSpeechQFormerModel,
         )
         from .models.grounding_dino import (
             GroundingDinoForObjectDetection,
