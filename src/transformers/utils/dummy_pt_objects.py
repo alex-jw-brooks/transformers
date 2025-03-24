@@ -5070,6 +5070,13 @@ class GraniteMoeSharedPreTrainedModel(metaclass=DummyObject):
         requires_backends(self, ["torch"])
 
 
+class GraniteSpeechForConditionalGeneration(metaclass=DummyObject):
+    _backends = ["torch"]
+
+    def __init__(self, *args, **kwargs):
+        requires_backends(self, ["torch"])
+
+
 class GraniteSpeechPreTrainedModel(metaclass=DummyObject):
     _backends = ["torch"]
 
@@ -5077,7 +5084,14 @@ class GraniteSpeechPreTrainedModel(metaclass=DummyObject):
         requires_backends(self, ["torch"])
 
 
-class GraniteSpeechForConditionalGeneration(metaclass=DummyObject):
+class GraniteSpeechEncoderProjectorPreTrainedModel(metaclass=DummyObject):
+    _backends = ["torch"]
+
+    def __init__(self, *args, **kwargs):
+        requires_backends(self, ["torch"])
+
+
+class GraniteSpeechQFormerModel(metaclass=DummyObject):
     _backends = ["torch"]
 
     def __init__(self, *args, **kwargs):
