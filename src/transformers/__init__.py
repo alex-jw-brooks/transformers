@@ -5773,13 +5773,13 @@ if TYPE_CHECKING:
     )
     from .models.gptj import GPTJConfig
     from .models.granite import GraniteConfig
-    from .models.granitemoe import GraniteMoeConfig
-    from .models.granitemoeshared import GraniteMoeSharedConfig
     from .models.granite_speech import (
+        GraniteSpeechConfig,
         GraniteSpeechEncoderConfig,
         GraniteSpeechProjectorConfig,
-        GraniteSpeechConfig,
     )
+    from .models.granitemoe import GraniteMoeConfig
+    from .models.granitemoeshared import GraniteMoeSharedConfig
     from .models.grounding_dino import (
         GroundingDinoConfig,
         GroundingDinoProcessor,
@@ -7704,6 +7704,12 @@ if TYPE_CHECKING:
             GraniteModel,
             GranitePreTrainedModel,
         )
+        from .models.granite_speech import (
+            GraniteSpeechEncoderProjectorPreTrainedModel,
+            GraniteSpeechForConditionalGeneration,
+            GraniteSpeechPreTrainedModel,
+            GraniteSpeechQFormerModel,
+        )
         from .models.granitemoe import (
             GraniteMoeForCausalLM,
             GraniteMoeModel,
@@ -7713,12 +7719,6 @@ if TYPE_CHECKING:
             GraniteMoeSharedForCausalLM,
             GraniteMoeSharedModel,
             GraniteMoeSharedPreTrainedModel,
-        )
-        from .models.granite_speech import (
-            GraniteSpeechForConditionalGeneration,
-            GraniteSpeechPreTrainedModel,
-            GraniteSpeechEncoderProjectorPreTrainedModel,
-            GraniteSpeechQFormerModel,
         )
         from .models.grounding_dino import (
             GroundingDinoForObjectDetection,
@@ -9560,8 +9560,8 @@ if TYPE_CHECKING:
     except OptionalDependencyNotAvailable:
         from .utils.dummy_torchaudio_objects import *
     else:
-        from .models.musicgen_melody import MusicgenMelodyFeatureExtractor, MusicgenMelodyProcessor
         from .models.granite_speech import GraniteSpeechFeatureExtractor, GraniteSpeechProcessor
+        from .models.musicgen_melody import MusicgenMelodyFeatureExtractor, MusicgenMelodyProcessor
     try:
         if not is_flax_available():
             raise OptionalDependencyNotAvailable()
