@@ -502,7 +502,6 @@ _import_structure = {
     "models.granite_speech": [
         "GraniteSpeechConfig",
         "GraniteSpeechEncoderConfig",
-        "GraniteSpeechProjectorConfig",
     ],
     "models.granitemoe": ["GraniteMoeConfig"],
     "models.granitemoeshared": ["GraniteMoeSharedConfig"],
@@ -2611,10 +2610,8 @@ else:
     )
     _import_structure["models.granite_speech"].extend(
         [
-            "GraniteSpeechEncoderProjectorPreTrainedModel",
             "GraniteSpeechForConditionalGeneration",
             "GraniteSpeechPreTrainedModel",
-            "GraniteSpeechQFormerModel",
         ]
     )
 
@@ -5776,7 +5773,6 @@ if TYPE_CHECKING:
     from .models.granite_speech import (
         GraniteSpeechConfig,
         GraniteSpeechEncoderConfig,
-        GraniteSpeechProjectorConfig,
     )
     from .models.granitemoe import GraniteMoeConfig
     from .models.granitemoeshared import GraniteMoeSharedConfig
@@ -7705,10 +7701,8 @@ if TYPE_CHECKING:
             GranitePreTrainedModel,
         )
         from .models.granite_speech import (
-            GraniteSpeechEncoderProjectorPreTrainedModel,
             GraniteSpeechForConditionalGeneration,
             GraniteSpeechPreTrainedModel,
-            GraniteSpeechQFormerModel,
         )
         from .models.granitemoe import (
             GraniteMoeForCausalLM,
