@@ -2603,6 +2603,13 @@ else:
             "GraniteMoeSharedPreTrainedModel",
         ]
     )
+    _import_structure["models.granitemoeshared"].extend(
+        [
+            "GraniteMoeHybridForCausalLM",
+            "GraniteMoeHybridModel",
+            "GraniteMoeHybridPreTrainedModel",
+        ]
+    )
     _import_structure["models.grounding_dino"].extend(
         [
             "GroundingDinoForObjectDetection",
