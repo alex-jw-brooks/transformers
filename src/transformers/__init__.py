@@ -2604,7 +2604,7 @@ else:
             "GraniteMoeSharedPreTrainedModel",
         ]
     )
-    _import_structure["models.granitemoeshared"].extend(
+    _import_structure["models.granitemoehybrid"].extend(
         [
             "GraniteMoeHybridForCausalLM",
             "GraniteMoeHybridModel",
@@ -5752,6 +5752,7 @@ if TYPE_CHECKING:
     from .models.granite import GraniteConfig
     from .models.granitemoe import GraniteMoeConfig
     from .models.granitemoeshared import GraniteMoeSharedConfig
+    from .models.granitemoehybrid import GraniteMoeHybridConfig
     from .models.grounding_dino import (
         GroundingDinoConfig,
         GroundingDinoProcessor,
@@ -7678,6 +7679,11 @@ if TYPE_CHECKING:
             GraniteMoeSharedForCausalLM,
             GraniteMoeSharedModel,
             GraniteMoeSharedPreTrainedModel,
+        )
+        from .models.granitemoehybrid import (
+            GraniteMoeHybridForCausalLM,
+            GraniteMoeHybridModel,
+            GraniteMoeHybridPreTrainedModel,
         )
         from .models.grounding_dino import (
             GroundingDinoForObjectDetection,

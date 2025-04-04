@@ -122,6 +122,7 @@ from . import (
     granite,
     granitemoe,
     granitemoeshared,
+    granitemoehybrid,
     grounding_dino,
     groupvit,
     helium,
