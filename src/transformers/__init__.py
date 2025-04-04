@@ -501,6 +501,7 @@ _import_structure = {
     "models.granite": ["GraniteConfig"],
     "models.granitemoe": ["GraniteMoeConfig"],
     "models.granitemoeshared": ["GraniteMoeSharedConfig"],
+    "models.granitemoehybrid" : ["GraniteMoeHybridConfig"],
     "models.grounding_dino": [
         "GroundingDinoConfig",
         "GroundingDinoProcessor",
