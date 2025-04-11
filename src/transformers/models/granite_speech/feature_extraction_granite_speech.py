@@ -76,7 +76,7 @@ class GraniteSpeechFeatureExtractor(FeatureExtractionMixin):
         )
 
         audio_embed_sizes = self.get_num_audio_tokens(self.get_audio_feature_lengths(audio_lengths))
-        speech_inputs["audio_embed_sizes"] = audio_embed_sizes
+
         # TODO: input_features_mask is not a great name, because
         # input_features and input_features_mask have different shapes
         # (before/after the projector)

@@ -62,7 +62,10 @@ class GraniteSpeechProcessor(ProcessorMixin):
             # trigger the conditions due to the way they call multimodal
             # processors, e.g., vLLM.
             audio_inputs = self.audio_processor(audio, device=device)
-            audio_embed_sizes = audio_inputs.pop("audio_embed_sizes")
+            ## FIXME
+            audio_embed_sizes = self.audio_processor.get_num_audio_tokens(
+                self.audio_processor.get_audio_feature_lengths(audio)
+            )
 
             # Expand the audio placeholders to match the feature dims; this
             # is similar to how many VLMs handle image tokens, e.g., llava next

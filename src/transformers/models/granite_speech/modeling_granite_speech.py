@@ -455,7 +455,7 @@ class GraniteSpeechForConditionalGeneration(GraniteSpeechPreTrainedModel, Genera
     def get_output_embeddings(self):
         return self.language_model.get_output_embeddings()
 
-    def get_audio_features(self, input_features: torch.Tensor) -> torch.Tensor:
+    def get_audio_embeds(self, input_features: torch.Tensor) -> torch.Tensor:
         """Get the audio features to merged into the multimodal embeddings."""
         encoder_embeds = self.encoder(input_features)
         projected_embeds = self.projector(encoder_embeds)
@@ -524,7 +524,7 @@ class GraniteSpeechForConditionalGeneration(GraniteSpeechPreTrainedModel, Genera
             if input_features.dtype != self.dtype:
                 input_features = input_features.to(self.dtype)
             # Get the audio features from the encoder / projector
-            audio_embeds = self.get_audio_features(input_features)
+            audio_embeds = self.get_audio_embeds(input_features)
 
             # Merge the audio features into the LLM embeddings
             inputs_embeds = self.get_merged_audio_embeddings(
@@ -609,7 +609,7 @@ class GraniteSpeechForConditionalGeneration(GraniteSpeechPreTrainedModel, Genera
         return model_inputs
 
     def get_merged_audio_embeddings(
-        self, input_ids: torch.Tensor, audio_features: torch.Tensor, input_features_mask: Optional[torch.Tensor] = None
+        self, input_ids: torch.Tensor, audio_embeds: torch.Tensor, input_features_mask: Optional[torch.Tensor] = None
     ) -> torch.Tensor:
         """
         Adds the audio token to the model's LLM vocabulary so that we can pass it
@@ -619,8 +619,8 @@ class GraniteSpeechForConditionalGeneration(GraniteSpeechPreTrainedModel, Genera
         Args:
             input_ids (`torch.Tensor`):
                 Input IDs containing one or more audio tokens.
-            audio_features (`torch.Tensor`):
-                Audio features to be masked into the language embeddings to form multimodal embeddings.
+            audio_embeds (`torch.Tensor`):
+                Audio embeddings to be masked into the language embeddings to form multimodal embeddings.
             input_features_mask (`torch.Tensor`, *optional*, defaults to `None`)
                 Mask to be applied to audio features prior to scattering into the language embeddings.
         """
@@ -630,16 +630,16 @@ class GraniteSpeechForConditionalGeneration(GraniteSpeechPreTrainedModel, Genera
 
         # Mask the audio features into the text embeddings
         special_audio_mask = is_audio_index.unsqueeze(-1)
-        audio_features = audio_features.to(inputs_embeds.device, inputs_embeds.dtype)
+        audio_embeds = audio_embeds.to(inputs_embeds.device, inputs_embeds.dtype)
         if input_features_mask is not None:
             if torch.all(is_audio_index.int().sum(dim=1) != input_features_mask.int().sum(dim=1)).item():
                 raise ValueError("Number of audio tokens does not match number of audio features")
 
-            audio_features = audio_features[input_features_mask]
+            audio_embeds = audio_embeds[input_features_mask]
 
         inputs_embeds = inputs_embeds.masked_scatter(
             special_audio_mask,
-            audio_features,
+            audio_embeds,
         )
         return inputs_embeds
 
