@@ -60,6 +60,8 @@ class GraniteSpeechFeatureExtractor(FeatureExtractionMixin):
         self.melspec = None
         self.projector_window_size = projector_window_size
         self.projector_downsample_rate = projector_downsample_rate
+        self.effective_window_size = self.projector_window_size // self.projector_downsample_rate
+        self.hop_length = hop_length
 
     def __call__(
         self,
@@ -72,7 +74,8 @@ class GraniteSpeechFeatureExtractor(FeatureExtractionMixin):
             batched_audio,
             device=device,
         )
-        audio_embed_sizes = self._get_num_audio_features(audio_lengths)
+
+        audio_embed_sizes = self.get_num_audio_tokens(self.get_audio_feature_lengths(audio_lengths))
         speech_inputs["audio_embed_sizes"] = audio_embed_sizes
         # TODO: input_features_mask is not a great name, because
         # input_features and input_features_mask have different shapes
@@ -125,30 +128,54 @@ class GraniteSpeechFeatureExtractor(FeatureExtractionMixin):
             return audio.detach().cpu()
         return audio
 
-    def _get_num_audio_features(self, audio_lengths: Sequence[int]) -> Sequence[int]:
+
+    def get_audio_feature_lengths(self, audio_lengths: Sequence[int]) -> Sequence[int]:
         """
-        Gets the (variable length) number of features (i.e., projector output) for the sequences
-        being considered.
+        Given the raw length of an audio sample, compute the unpaddded feature
+        lengths.
 
         Args:
             audio_lengths (`Sequence[int]`):
                 Sequence of one or more raw audio lengths.
-        """
-        hop_length = self.melspec_kwargs["hop_length"]
-        effective_window_size = self.projector_window_size // self.projector_downsample_rate
 
-        projector_lengths = []
-        for raw_length in audio_lengths:
+        Returns:
+            Number of audio features per sample.
+        """
+        feature_lengths = []
+
+        for audio_length in audio_lengths:
             # mel sequence length computation
-            mel_length = raw_length // hop_length + 1
+            mel_length = audio_length // self.hop_length + 1
             # encoder frame takes two mel features
             encoder_length = mel_length // 2
-            nblocks = math.ceil(encoder_length / self.projector_window_size)
-            # projector output length
-            projector_length = nblocks * effective_window_size
-            projector_lengths.append(projector_length)
+            feature_lengths.append(encoder_length)
 
-        return projector_lengths
+        return feature_lengths
+
+
+    def get_num_audio_tokens(self, feature_lengths: Sequence[int]) -> Sequence[int]:
+        """
+        Given the unpadded feature lengths for one or more sample, get the
+        number of audio tokens to be expanded.
+
+        Args:
+            feature_lengths (`Sequence[int]`):
+                Sequence of one or more audio feature lengths (i.e.,
+                encoder length).
+
+        Returns:
+            Number of audio tokens per sample.
+        """
+        num_audio_tokens = []
+
+        for feature_length in feature_lengths:
+            nblocks = math.ceil(feature_length / self.projector_window_size)
+            # projector output length
+            projector_length = nblocks * self.effective_window_size
+            num_audio_tokens.append(projector_length)
+
+        return num_audio_tokens
+
 
     def _get_audios_and_audio_lengths(self, audios: AudioInput) -> Sequence[torch.Tensor, Sequence[int]]:
         """
