@@ -500,8 +500,8 @@ _import_structure = {
     "models.gptj": ["GPTJConfig"],
     "models.granite": ["GraniteConfig"],
     "models.granitemoe": ["GraniteMoeConfig"],
+    "models.granitemoehybrid": ["GraniteMoeHybridConfig"],
     "models.granitemoeshared": ["GraniteMoeSharedConfig"],
-    "models.granitemoehybrid" : ["GraniteMoeHybridConfig"],
     "models.grounding_dino": [
         "GroundingDinoConfig",
         "GroundingDinoProcessor",
@@ -5751,8 +5751,8 @@ if TYPE_CHECKING:
     from .models.gptj import GPTJConfig
     from .models.granite import GraniteConfig
     from .models.granitemoe import GraniteMoeConfig
-    from .models.granitemoeshared import GraniteMoeSharedConfig
     from .models.granitemoehybrid import GraniteMoeHybridConfig
+    from .models.granitemoeshared import GraniteMoeSharedConfig
     from .models.grounding_dino import (
         GroundingDinoConfig,
         GroundingDinoProcessor,
@@ -7675,15 +7675,15 @@ if TYPE_CHECKING:
             GraniteMoeModel,
             GraniteMoePreTrainedModel,
         )
-        from .models.granitemoeshared import (
-            GraniteMoeSharedForCausalLM,
-            GraniteMoeSharedModel,
-            GraniteMoeSharedPreTrainedModel,
-        )
         from .models.granitemoehybrid import (
             GraniteMoeHybridForCausalLM,
             GraniteMoeHybridModel,
             GraniteMoeHybridPreTrainedModel,
+        )
+        from .models.granitemoeshared import (
+            GraniteMoeSharedForCausalLM,
+            GraniteMoeSharedModel,
+            GraniteMoeSharedPreTrainedModel,
         )
         from .models.grounding_dino import (
             GroundingDinoForObjectDetection,
